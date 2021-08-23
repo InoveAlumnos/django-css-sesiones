@@ -1,24 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
+
+    {% block head %}
+
+    {% endblock head %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'e-commerce/css/base.css' %}">
     <title>{% block title %}Marvel e-commerce{% endblock %}</title>
 </head>
 
 <body>
     <div id="sidebar">
-        <img id ="logo" src="{% static 'e-commerce/img/marvel.svg' %}" alt="My image" width="15%" height="10%">
+        <img id="logo" src="{% static 'e-commerce/img/marvel.svg' %}" alt="My image" width="15%" height="10%">
+        <br>
         {% block sidebar %}
-        <ul>
-            <li><a href="/e-commerce/index">Comics</a></li>
-            <li><a href="/e-commerce/">Login</a></li>
-        </ul>
+        | <a href="/e-commerce/index">Comics</a>
+        {% if user.is_authenticated %}
+        | <a href="/e-commerce/logout">Logout</a>
+        | <a href="/e-commerce/user">User profile</a>
+        | <a href="/e-commerce/cart">Cart</a>
+        | <a href="/e-commerce/wish">Wishes</a>
+        {% else %}
+        | <a href="/e-commerce/login">Login</a>
+        | <a href="/e-commerce/singup">Sing up!</a>
+        {% endif %}
         {% endblock %}
     </div>
 
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+    <footer>
+
+        <div id="footer">
+            <h4>Esta aplicación fue desarrollada como parte del curso "Python Django" en <a
+                    href="https://www.inove.com.ar">Inove - coding school</a></h4>
+
+        </div>
+
+    </footer>
 </body>
+
 </html>

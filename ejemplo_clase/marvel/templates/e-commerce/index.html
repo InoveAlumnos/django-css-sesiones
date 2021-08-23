@@ -1,7 +1,71 @@
 {% extends "e-commerce/base.html" %}
 
-{% block title %}INDEX{% endblock %}
+{% block title %}index{% endblock %}
 
 {% block content %}
-{{user.username}}
+
+<div class='grid-container'>
+    {% for comic in comic_list %}
+    <div class="grid-item">
+        <div class="comic-block">
+
+            <a href="detail?marvel_id={{comic.marvel_id}} ">
+                <img class='comic_img' src="{{comic.picture}}" alt="Not found :C">
+            </a>
+            <h3>
+                {{comic.title}}
+            </h3>
+            <div class="price">
+                <p>
+                    Precio: U$S {{comic.price}} -
+                    Stock:
+                    {% if comic.stock_qty > 0 %}
+                    {{comic.stock_qty}}</p>
+                {% else %}
+                <h3>Agotado!</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+<div class="paginator-content">
+    <div class="paginator-item">
+
+        {% if page_obj.has_previous %}
+        <a class="page-btn" href="?page=1">First ( 1 )</a>
+        {% endif %}
+
+
+    </div>
+    <div class="paginator-item">
+        {% if page_obj.has_previous %}
+        <a class="page-btn" href="?page={{page_obj.previous_page_number}}"><- Prev</a>
+        {% endif %}
+    </div>
+    <div class="paginator-item">
+        <div class="page-btn">
+        <a class="page-btn" href=""> {{page_obj.number}}</a>
+
+        </div>
+    </div>
+    <div class="paginator-item">
+        {% if page_obj.has_next %}
+        <a class="page-btn" href="?page={{page_obj.next_page_number}}"> Next -></a>
+        {% endif %}
+    </div>
+    <div class="paginator-item">
+        {% if page_obj.has_next %}
+        <a class="page-btn" href="?page={{page_obj.paginator.num_pages}}">Last ( {{page_obj.paginator.num_pages}} )</a>
+        {% endif %}
+    </div>
+
+</div>
+
+
+
+
 {% endblock %}

@@ -1,16 +1,131 @@
+/* Importamos fuentes: */
+@import url('https://fonts.googleapis.com/css2?family=Marvel:ital,wght@1,700&family=Permanent+Marker&display=swap');
+
+/* Establecemos las variables globales:  */
 :root {
     --main-bg-color: rgb(63, 63, 63);
+    --main-content-color: rgba(63, 63, 63, 0.568);
     --font-color-white: rgb(207, 207, 207);
-    --font-color-gray: rgb(49, 49, 49);
-  }
+    --font-color-red: rgb(255, 0, 0);
+    --font-color-yellow: rgb(255, 255, 0);
+    --link-color:rgb(0, 81, 255);
+    --font-color-tarea:rgb(16, 209, 16);
+}
 body{
-    background-color: var(--main-bg-color);
+    /* background-color: var(--main-bg-color); */
     color: var(--font-color-white);
-    }
+    background-image: url('../img/background.jpg');
+    background-size:cover;
+    font-family: 'Marvel', sans-serif;
+}
+
+a{
+    color:var(--link-color);
+    font-family: 'Permanent Marker', cursive;
+    font-size: 25px;
+}
+
 #content{
-    background-color: rgb(200, 200, 200);
-    color: var(--font-color-gray);
+    color: var(--font-color-red);
+    padding: 2%;
+    border-radius: 5px;
+    background-color: var(--main-content-color);
 }
 #logo{
     border-radius: 5px;
+}
+
+
+
+#sidebar{
+padding: 10px;
+
+}
+
+.grid-container{
+    text-align: center;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.grid-item {
+    padding: 5px;
+    font-size: 15px;
+    text-align: center;
+    
+}
+
+.comic_img{
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.comic-block{
+    /* background-color: rgb(194, 194, 194); */
+    border-radius: 5px;
+    border: 2px solid rgba(90, 90, 90, 0.925);
+    height: 100%;    
+    background-image: url('../img/background.jpg');
+    /* background-image: url("https://cdn.pixabay.com/photo/2015/07/08/07/54/tunnel-835461_1280.jpg"); */
+    background-size:cover;
+}   
+
+form{
+font-size: 20px;
+}
+
+.paginator-content{
+    text-align: center;
+    display: grid;
+    grid-template-columns: 35% 10% 10% 10% 35%;
+}
+.paginator-item{
+    padding: 5px;
+    font-size: 15px;
+    text-align: center;
+    /* border: 3px solid green; */
+}
+
+.comic-grid{
+    text-align: center;
+    display: grid;
+    grid-template-columns: 30% 70% ;
+}
+.comic-item{
+    padding: 2%;
+    font-size: 20px;
+    text-align: center;
+    /* border: 3px solid green; */
+}
+
+.comic-item img{
+    width: 100%;
+    border-radius: 10px;
+
+}
+
+.comic-item h1{
+    font-family: 'Permanent Marker', cursive;
+}
+.comic-item h2{
+    font-size: 20px;
+    text-align:justify;
+    color:var(--font-color-white);
+}
+.price-item{
+    font-family: 'Permanent Marker', cursive;
+    color:var(--font-color-yellow);
+    font-size: 60px;
+    text-align:right;
+}
+#grid-buttons{ 
+    text-align: left;
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
+.tarea{
+    color:var(--font-color-tarea);
+    font-family: 'Marvel', sans-serif;
+
 }

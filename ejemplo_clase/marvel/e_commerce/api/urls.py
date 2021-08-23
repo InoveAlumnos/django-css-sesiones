@@ -9,8 +9,8 @@ urlpatterns = [
     path('user/login/', LoginUserAPIView.as_view()),
 
     # APIs de Marvel
-    path('get_comics/',get_comics),
-    path('purchased_item/',purchased_item),
+    path('get-comics/',get_comics, name='get-comics'),
+    path('purchased-item/',purchased_item, name='purchased-item'),
     
     # Comic API View:
     path('comics/get', GetComicAPIView.as_view()),

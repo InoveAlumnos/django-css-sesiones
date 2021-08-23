@@ -1,7 +1,55 @@
 {% extends "e-commerce/base.html" %}
-
-{% block title %}CARRITO{% endblock %}
-
+{% block title %}Carrito{% endblock %}
 {% block content %}
-{{user.username}}
+{% load static %}
+
+<h1>{{user.username}} este es tu carrito de compras, puedes confirmar el pedido o eliminar elementos de tu carrito.</h1>
+
+<table>
+
+    {% for comic in cart_items %}
+    <tr class="comic-item">
+        <td>
+            <a href="/e-commerce/detail?marvel_id={{comic.marvel_id}}">
+                <img src="{{comic.picture}}" alt="Not found">
+            </a>
+        </td>
+        <td>
+            <ul>
+                <li>
+                    <h2>{{comic.title}}</h2>
+                </li>
+                <li>
+                    <h2>Precio unitario: U$S {{comic.price}}</h2>
+                </li>
+            </ul>
+        </td>
+        <td>
+            <form action="{% url 'checkbutton' %}" method="POST">{%csrf_token%}
+                <input type="hidden" name="username" value="{{user.username}}">
+                <input type="hidden" name="marvel_id" value="{{comic.marvel_id}}">
+                <input type="hidden" name="user_authenticated" value="{{user.is_authenticated}}">
+                <input type="hidden" name="type_button" value="cart">
+                <input type="hidden" name="actual_value" value="True">
+                <input type="hidden" name="path" value="cart">
+                <input type="hidden" name="path" value="{% url 'cart' %}">
+                <input type="image" src="{% static 'e-commerce/img/cart-true.png' %}" width="60%">
+            </form>
+
+            <p>(Quitar de carrito)</p>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+    <td>
+        <h1>Precio total: U$S {{total_price}}</h1>
+    </td>
+    <td style="text-align: center;">
+        <a  href="{% url 'thanks' %}">
+            <h1>-> Confirmar pedido <- </h1>
+        </a>
+    </td>
+</table>
+
 {% endblock %}
