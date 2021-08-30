@@ -3,7 +3,7 @@
 {% block title %}index{% endblock %}
 
 {% block content %}
-
+<!-- Lista de comics: -->
 <div class='grid-container'>
     {% for comic in comic_list %}
     <div class="grid-item">
@@ -30,7 +30,7 @@
     {% endfor %}
 </div>
 
-
+<!-- Paginado: -->
 
 <div class="paginator-content">
     <div class="paginator-item">
@@ -65,7 +65,11 @@
 
 </div>
 
-
+<!-- Ejemplo de paginado con un bucle:
+{% for page in page_obj.paginator.page_range %}
+    <a href="?page={{page}}">{{page}}</a>
+{% endfor %} -->
+    
 
 
 {% endblock %}

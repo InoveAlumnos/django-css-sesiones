@@ -36,13 +36,13 @@ services:
     # depends_on indica que este servicio depende de que primero inicie "db"
     depends_on: ["db"]
 
-  modulo_8:
+  modulo_7:
     # build es el lugar desde donde toma los archivos para generar la imagen.
     build: .
     # Imágen a utilizar:
-    image: modulo_8
+    image: modulo_7
     # Nombre del container:
-    container_name: modulo_8
+    container_name: modulo_7
     # Comportamiento ante fallos y al iniciar el sistema:
     restart: always
     # Carpetas enlazadas:

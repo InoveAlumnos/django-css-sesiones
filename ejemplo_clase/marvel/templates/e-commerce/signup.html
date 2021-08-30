@@ -1,0 +1,12 @@
+{% extends 'e-commerce/base.html' %}
+
+{% block content %}
+
+<form method="POST">
+  {% csrf_token %}
+  {{form.as_p}}
+  <br>
+  <input type="submit" value="Register" />
+</form>
+
+{% endblock content %}

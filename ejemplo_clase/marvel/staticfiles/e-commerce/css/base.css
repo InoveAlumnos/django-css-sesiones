@@ -8,7 +8,7 @@
     --font-color-white: rgb(207, 207, 207);
     --font-color-red: rgb(255, 0, 0);
     --font-color-yellow: rgb(255, 255, 0);
-    --link-color:rgb(0, 81, 255);
+    --link-color:rgb(34, 103, 251);
     --font-color-tarea:rgb(16, 209, 16);
 }
 body{
@@ -128,4 +128,8 @@ font-size: 20px;
     color:var(--font-color-tarea);
     font-family: 'Marvel', sans-serif;
 
+}
+
+a[href*="inove"]{
+    color:rgb(54, 190, 88);
 }
