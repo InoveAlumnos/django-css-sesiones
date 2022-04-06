@@ -38,7 +38,13 @@ class UserForm(UserCreationForm):
     requisitos para agregar un nuevo usuario a la base de datos.
     También tiene los métodos para validar todos sus campos.
     '''
-    first_name = forms.CharField()
+    first_name = forms.CharField(widget=forms.TextInput(
+        # Así podemos asignar las clases CSS a nuestros forms . . .
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Username'
+        }
+    ))
     last_name = forms.CharField()
     email = forms.EmailField()
 
