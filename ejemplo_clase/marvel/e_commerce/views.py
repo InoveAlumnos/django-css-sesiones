@@ -1,6 +1,6 @@
 
 # Importamos vistas genericas:
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView
 
 # Importamos los modelos que vamos a usar:
 from django.contrib.auth.models import User
@@ -16,8 +16,126 @@ from django.contrib.auth.forms import UserCreationForm
 # Utilidades:
 from marvel.settings import VERDE, AMARILLO
 
-# NOTE: Páginas del sitio **********************************************************
 
+# NOTE: Generamos las vistas genéricas para probar Django Template:
+
+TEST_DIC = {
+    'saludo': 'Hola, mi nombre es: ',
+    'user': 'INOVE!! '
+}
+
+TEST_LIST = ['Hola, ', 'mi ', 'nombre ', 'es ', 'Inove ']
+
+
+# NOTE: Generamos las vistas genéricas para probar bloques HTML:
+class PruebaView(TemplateView):
+    template_name = 'e-commerce/hello.html'
+
+
+class TextView(TemplateView):
+    template_name = 'e-commerce/00-text.html'
+
+
+class LinksView(TemplateView):
+    template_name = 'e-commerce/01-links.html'
+
+
+class ListsView(TemplateView):
+    template_name = 'e-commerce/02-listas.html'
+
+
+class ButtonsView(TemplateView):
+    template_name = 'e-commerce/03-buttons.html'
+
+
+class TableView(TemplateView):
+    template_name = 'e-commerce/04-table.html'
+
+
+class FormView(TemplateView):
+    template_name = 'e-commerce/05-form.html'
+
+
+class ImageView(TemplateView):
+    template_name = 'e-commerce/06-images.html'
+
+
+class ExampleView(TemplateView):
+    template_name = 'e-commerce/example.html'
+
+
+class VariablesView(TemplateView):
+    template_name = 'e-commerce/variables.html'
+
+
+class VariableDeContextoView(TemplateView):
+    template_name = 'e-commerce/variable-contexto.html'
+
+    def get_context_data(self, **kwargs):
+        '''
+        En esta función vamos a agregar más información a nuestro 
+        contexto de ejecución para que pueda ser incluido en nuestros templates!
+        La variable `context` es funciona como un diccionario, es por ello que vamos a 
+        ir agregandole información para luego ser accedida por su key.
+        Aquí también podemos interceptar el objeto "request" 
+        con los datos de la petición realizada al sitio.
+        '''
+        context = super().get_context_data(**kwargs)
+        # NOTE: Agregamos una lista a nuestro contexto:
+        context['prueba_lista'] = [
+            'Hola', 'mi nombre es', self.request.user.username]
+        
+        # NOTE: Agregamos un diccionario a nuestro contexto:
+        context['prueba_diccionario'] = {
+            'saludo': 'hola, mi nombre es: ', 'usuario': f'{self.request.user.username}'.upper()}
+        return context
+
+
+class ForView(TemplateView):
+    template_name = 'e-commerce/for.html'
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['TEST_DIC']=TEST_DIC
+        context['TEST_LIST']=TEST_LIST
+        return context
+
+
+# NOTE: Generamos el template base para extender:
+class IfView(TemplateView):
+    template_name = 'e-commerce/if.html'
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['TEST_DIC']=TEST_DIC
+        context['TEST_LIST']=TEST_LIST
+        return context
+
+
+class UrlOrigenView(TemplateView):
+    template_name = 'e-commerce/url-origen.html'
+
+
+class UrlDestinoView(TemplateView):
+    template_name = 'e-commerce/url-destino.html'
+
+
+class CsrfTokenFormView(CreateView):
+    '''
+    Importante: Utilizamos un CreateView porque éste admite peticiones POST, 
+    necesarias para el envío del formulario en este caso.
+    Esta clase requiere un modelo y un campo como mínimo para funcionar.
+    '''
+    model = User
+    fields = ['username']
+    template_name = 'e-commerce/csrf-form.html'
+
+
+class ExtendidoView(TemplateView):
+    template_name = 'e-commerce/extendido.html'
+
+
+# NOTE: Páginas del sitio **********************************************************
 class BaseView(TemplateView):
     '''
     Template base que vamos a extender para el resto de las páginas del sitio.
@@ -113,27 +231,29 @@ class DetailsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            comic_obj = Comic.objects.get(
-                marvel_id=self.request.GET.get('marvel_id'))
-            context["comic"] = comic_obj
+            _comic = Comic.objects.get(
+                marvel_id=self.request.GET.get('marvel_id')
+            )
+            context["comic"] = _comic
             context['comic_picture_full'] = str(
-                comic_obj.picture).replace('/standard_xlarge', '')
+                _comic.picture
+            ).replace('/standard_xlarge', '')
             context['comic_desc'] = str(
-                comic_obj.description).replace('<br>', '\n')
-            username = self.request.user
-            if username != None:
-                user_obj = User.objects.filter(username=username)
-                if user_obj.first() != None:
-                    wish_obj = WishList.objects.filter(
-                        user_id=user_obj[0].id, comic_id=comic_obj)
-                    if wish_obj.first() != None:
-                        context["favorite"] = wish_obj.first().favorite
-                        context["cart"] = wish_obj.first().cart
-                        context["wished_qty"] = wish_obj.first().wished_qty
-                    else:
-                        context["favorite"] = False
-                        context["cart"] = False
-                        context["wished_qty"] = 0
+                _comic.description
+            ).replace('<br>', '\n')
+            if self.request.user:
+                _wish_qs = WishList.objects.filter(
+                    user=self.request.user, comic=_comic
+                )
+                if _wish_qs.exists():
+                    _wish = _wish_qs.first()
+                    context["favorite"] = _wish.favorite
+                    context["cart"] = _wish.cart
+                    context["wished_qty"] = _wish.wished_qty
+                else:
+                    context["favorite"] = False
+                    context["cart"] = False
+                    context["wished_qty"] = 0
         except:
             return context
         return context
@@ -152,10 +272,11 @@ def check_button(request):
         type_button = request.POST.get('type_button')
         actual_value = request.POST.get('actual_value')
         path = request.POST.get('path')
+        print('FERNANDAAA', marvel_id)
 
         # Validamos los datos y les damos formato:
         username = username if username != '' else None
-        marvel_id = marvel_id if marvel_id != '' else None
+        marvel_id = marvel_id if marvel_id else None
         user_authenticated = True if user_authenticated == 'True' else False
         type_button = type_button if type_button != '' else None
         actual_value = True if actual_value == 'True' else False
@@ -166,11 +287,11 @@ def check_button(request):
             user_obj = User.objects.get(username=username)
             comic_obj = Comic.objects.get(marvel_id=marvel_id)
             wish_obj = WishList.objects.filter(
-                user_id=user_obj, comic_id=comic_obj).first()
+                user=user_obj, comic=comic_obj).first()
             if not wish_obj:
                 # Si no tiene "wishlist" creamos una
                 wish_obj = WishList.objects.create(
-                    user_id=user_obj, comic_id=comic_obj)
+                    user=user_obj, comic=comic_obj)
 
             # Remplazamos el estado del botón seleccionado:
             if type_button == "cart":
@@ -214,8 +335,8 @@ class CartView(TemplateView):
         context = super().get_context_data(**kwargs)
         username = self.request.user
         user_obj = User.objects.get(username=username)
-        wish_obj = WishList.objects.filter(user_id=user_obj, cart=True)
-        cart_items = [obj.comic_id for obj in wish_obj]
+        wish_obj = WishList.objects.filter(user=user_obj, cart=True)
+        cart_items = [obj.comic for obj in wish_obj]
         context['cart_items'] = cart_items
         context['total_price'] = round((sum([float(comic.price) for comic in cart_items])), 2)
         print(context['cart_items'])
@@ -237,8 +358,8 @@ class WishView(TemplateView):
         context = super().get_context_data(**kwargs)
         username = self.request.user
         user_obj = User.objects.get(username=username)
-        wish_obj = WishList.objects.filter(user_id=user_obj, favorite=True)
-        cart_items = [obj.comic_id for obj in wish_obj]
+        wish_obj = WishList.objects.filter(user=user_obj, favorite=True)
+        cart_items = [obj.comic for obj in wish_obj]
         context['fav_items'] = cart_items
         print(context['fav_items'])
         return context
