@@ -28,7 +28,9 @@ Provincia o estado
 Ciudad
 Código Postal
 Teléfono de contacto
-Para extender los datos, se puede relacionar una tabla mas con los nuevos datos del usuario, y luego agregar un FK de la tabla "User". Luego, estos datos también deben reflejarse en esta página (No importa si deben agregarse desde el Admin de Django).
+Para extender los datos, se puede crear una tabla más con los nuevos datos del usuario, y debemos agregar un campo relacionado a "User". Luego, estos datos también deben reflejarse en esta página (No importa si deben agregarse desde el Admin de Django).
+Tener en cuenta que estos "detalles" son únicos para el usuario, por lo tanto, tenemos 1 registro del modelo con los detalles relacionado a 1 usuario. Entonces, podemos pensar en una relación 1 a 1, para esto, utiilizamos la clase **OneToOneField** de Django. [OneToOneField](https://docs.djangoproject.com/en/3.2/ref/models/fields/#onetoonefield)
+
 ### 3) Construir una página para actualizar los datos del usuario.
 Construir una página para actualizar los datos del usuario por medio de un formulario y generar un enlace desde la página "user profile" hacia esa página. Al completar el formulario, se debe actualizar el contenido de los datos del usuario y redirigir a la página "user profile"
 ### 4) Modificar la página "cart".
